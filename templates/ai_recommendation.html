@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Travel Recommendation - Travel Recommendation System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding-bottom: 100px;
+        }
+        
+        /* Navbar Styles */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95) !important;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 1rem 0;
+        }
+        
+        .navbar-brand {
+            font-weight: bold;
+            color: #667eea !important;
+            font-size: 1.5rem;
+        }
+        
+        .navbar-brand i {
+            margin-right: 10px;
+        }
+        
+        .nav-link {
+            color: #333 !important;
+            font-weight: 500;
+            margin: 0 10px;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: #667eea !important;
+        }
+        
+        .btn-nav {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 8px 25px;
+            border-radius: 25px;
+            font-weight: 500;
+            transition: transform 0.3s ease;
+        }
+        
+        .btn-nav:hover {
+            transform: scale(1.05);
+            color: white;
+        }
+
+        .container {
+            margin-top: 100px;
+            padding-bottom: 50px;
+        }
+        
+        .ai-container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+        }
+        
+        .ai-container h1 {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: #333;
+            margin-top: 10px;
+        }
+        
+        .form-control, .form-select {
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 10px 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+        
+        .btn-generate {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            width: 100%;
+            margin-top: 20px;
+        }
+        
+        .btn-generate:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.6);
+            color: white;
+        }
+        
+        .result-container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            margin-top: 30px;
+        }
+        
+        .result-container h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+        
+        .result-content {
+            line-height: 1.8;
+            color: #333;
+        }
+        
+        .result-content h3 {
+            color: #764ba2;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+        
+        .result-content ul {
+            margin-left: 20px;
+        }
+        
+        .result-content li {
+            margin-bottom: 10px;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+        }
+        
+        .spinner-border {
+            width: 3rem;
+            height: 3rem;
+            color: #667eea;
+        }
+        
+        /* Footer Styles */
+        .footer {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px 0;
+            margin-top: 50px;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .footer-content {
+            text-align: center;
+            color: #333;
+        }
+        
+        .footer-content p {
+            margin: 5px 0;
+            font-size: 0.95rem;
+        }
+        
+        .footer-content .heart {
+            color: #e74c3c;
+            font-size: 1.1rem;
+        }
+        
+        .footer-content .developer-name {
+            font-weight: 600;
+            color: #667eea;
+        }
+        
+        .footer-content .student-id {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        /* Animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .ai-container {
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+        }
+        
+        .checkbox-item input[type="checkbox"] {
+            margin-right: 8px;
+            width: 18px;
+            height: 18px;
+        }
+        
+        .checkbox-item label {
+            margin: 0;
+            font-weight: 500;
+        }
+    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-plane"></i>Travel Recommender
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/"><i class="fas fa-home"></i> Home</a>
+                    </li>
+                    {% if session.get('username') %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/recommendation"><i class="fas fa-compass"></i> Recommendations</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/ai-recommendation"><i class="fas fa-robot"></i> AI Recommendation</a>
+                    </li>
+                    <li class="nav-item">
+                        <span class="nav-link"><i class="fas fa-user"></i> {{ session.get('username') }}</span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-nav" href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login"><i class="fas fa-sign-in-alt"></i> Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-nav" href="/signup"><i class="fas fa-user-plus"></i> Sign Up</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="ai-container">
+                    <!-- Flash Messages -->
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                    
+                    <h1 class="text-center"><i class="fas fa-robot"></i> AI-Powered Travel Recommendation</h1>
+                    <p class="text-center text-muted mb-4">Get personalized travel suggestions powered by Google Gemini AI</p>
+                    
+                    <form method="POST" action="/ai-recommendation">
+                        <div class="row">
+                            <!-- User Interest -->
+                            <div class="col-md-12 mb-3">
+                                <label for="user_interest" class="form-label">
+                                    <i class="fas fa-heart"></i> Tell us about your travel interests
+                                </label>
+                                <textarea class="form-control" id="user_interest" name="user_interest" rows="3" 
+                                          placeholder="E.g., I love adventure sports, photography, trying local cuisine..." required></textarea>
+                            </div>
+                            
+                            <!-- Climate -->
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label"><i class="fas fa-cloud-sun"></i> Preferred Climate</label>
+                                <div class="checkbox-group">
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="summer" name="climate" value="Summer">
+                                        <label for="summer">Summer</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="winter" name="climate" value="Winter">
+                                        <label for="winter">Winter</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="rainy" name="climate" value="Rainy">
+                                        <label for="rainy">Rainy</label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Place Type -->
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label"><i class="fas fa-map-marked-alt"></i> Type of Places</label>
+                                <div class="checkbox-group">
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="beaches" name="place_type" value="Beaches">
+                                        <label for="beaches">Beaches</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="mountains" name="place_type" value="Mountains">
+                                        <label for="mountains">Mountains</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="urban" name="place_type" value="Urban Life">
+                                        <label for="urban">Urban Life</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="historical" name="place_type" value="Historical">
+                                        <label for="historical">Historical</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="religious" name="place_type" value="Religious Places">
+                                        <label for="religious">Religious Places</label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Number of People -->
+                            <div class="col-md-6 mb-3">
+                                <label for="travel_group" class="form-label"><i class="fas fa-users"></i> Traveling With</label>
+                                <select class="form-select" id="travel_group" name="travel_group" required>
+                                    <option value="">Select...</option>
+                                    <option value="Solo">Solo</option>
+                                    <option value="Family">Family</option>
+                                    <option value="Friends">Friends</option>
+                                    <option value="Company Teammates">Company Teammates</option>
+                                    <option value="Group of Strangers">Group of Strangers</option>
+                                </select>
+                            </div>
+                            
+                            <!-- Transport Mode -->
+                            <div class="col-md-6 mb-3">
+                                <label for="transport" class="form-label"><i class="fas fa-car"></i> Preferred Transport</label>
+                                <select class="form-select" id="transport" name="transport" required>
+                                    <option value="">Select...</option>
+                                    <option value="Car">Car</option>
+                                    <option value="Flight">Flight</option>
+                                    <option value="Train">Train</option>
+                                    <option value="Bus">Bus</option>
+                                    <option value="Motorcycle">Motorcycle</option>
+                                </select>
+                            </div>
+                            
+                            <!-- Budget Range -->
+                            <div class="col-md-6 mb-3">
+                                <label for="budget_min" class="form-label"><i class="fas fa-rupee-sign"></i> Minimum Budget (₹)</label>
+                                <input type="number" class="form-control" id="budget_min" name="budget_min" 
+                                       min="1500" max="50000" value="1500" required>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="budget_max" class="form-label"><i class="fas fa-rupee-sign"></i> Maximum Budget (₹)</label>
+                                <input type="number" class="form-control" id="budget_max" name="budget_max" 
+                                       min="1500" max="50000" value="10000" required>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-generate">
+                            <i class="fas fa-magic"></i> Generate AI Recommendations
+                        </button>
+                    </form>
+                </div>
+                
+                <!-- Results Section -->
+                {% if recommendation %}
+                <div class="result-container">
+                    <h2><i class="fas fa-star"></i> Your Personalized Travel Recommendations</h2>
+                    <div class="result-content">
+                        {{ recommendation|safe }}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>Developed with <span class="heart">❤️</span> by <span class="developer-name">Sanaiya</span></p>
+                <p class="developer-name">SANIYA S</p>
+                <p class="student-id">PES1PG24CA368</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

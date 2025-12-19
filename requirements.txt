@@ -1,3 +1,7 @@
 flask
 pandas
 scikit-learn
+google-generativeai
+markdown
+werkzeug
+python-dotenv

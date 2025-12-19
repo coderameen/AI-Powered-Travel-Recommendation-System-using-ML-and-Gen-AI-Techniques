@@ -1,0 +1,70 @@
+/* Global sizing and alignment tweaks */
+:root {
+  font-size: 14px;
+}
+
+html, body {
+  line-height: 1.4;
+}
+
+/* Typography */
+h1 { font-size: 1.9rem; }
+h2 { font-size: 1.5rem; }
+h3 { font-size: 1.25rem; }
+p, label, .form-label, .nav-link, .btn, .form-control, .form-select, td, th {
+  font-size: 0.95rem;
+}
+
+/* Navbar tighter spacing */
+.navbar { padding: 0.5rem 0 !important; }
+.navbar .navbar-brand { font-size: 1.25rem !important; }
+.navbar .btn-nav { padding: 6px 16px !important; border-radius: 18px !important; font-size: 0.95rem !important; }
+
+/* Home page hero */
+.center-div {
+  padding: 24px !important;
+  max-width: 780px;
+  width: calc(100% - 32px);
+}
+.center-div h1 { font-size: 2rem !important; }
+.center-div p { font-size: 1rem !important; }
+.center-div .btn { padding: 10px 22px !important; font-size: 0.95rem !important; border-radius: 32px !important; }
+
+/* Cards/containers */
+.form-container, .ai-container, .result-container, .login-container, .signup-container {
+  padding: 24px !important;
+}
+
+/* Forms */
+.form-control, .form-select { padding: 8px 12px !important; }
+.input-group i { font-size: 0.95rem; }
+
+/* Buttons */
+.btn-custom, .btn-generate, .btn-login, .btn-signup {
+  padding: 10px 20px !important;
+  font-size: 0.95rem !important;
+  border-radius: 28px !important;
+}
+
+/* Tables */
+.recommendations-table th, .recommendations-table td { padding: 10px !important; font-size: 0.9rem; }
+
+/* Footer */
+footer, .footer { padding: 10px 0 !important; }
+.footer-content p, footer p { font-size: 0.85rem !important; margin: 3px 0 !important; }
+
+/* Utility */
+.container { max-width: 1080px; }
+
+/* Reduce icon sizes slightly for balance */
+.fa-2x { font-size: 1.5em; }
+.fa-3x { font-size: 2em; }
+
+/* Prevent overly large headings inside styled blocks */
+.ai-container h1, .form-container h1, .result-container h2 { font-size: 1.75rem !important; }
+
+@media (max-width: 576px) {
+  :root { font-size: 13px; }
+  .center-div { padding: 18px !important; }
+  .navbar .navbar-brand { font-size: 1.1rem !important; }
+}

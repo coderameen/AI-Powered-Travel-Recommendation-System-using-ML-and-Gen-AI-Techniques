@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Travel Recommendation System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -11,9 +13,56 @@
             box-sizing: border-box;
         }
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             overflow: hidden;
         }
+        
+        /* Navbar Styles */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95) !important;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 1rem 0;
+            z-index: 1000;
+        }
+        
+        .navbar-brand {
+            font-weight: bold;
+            color: #667eea !important;
+            font-size: 1.5rem;
+        }
+        
+        .navbar-brand i {
+            margin-right: 10px;
+        }
+        
+        .nav-link {
+            color: #333 !important;
+            font-weight: 500;
+            margin: 0 10px;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: #667eea !important;
+        }
+        
+        .btn-nav {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 8px 25px;
+            border-radius: 25px;
+            font-weight: 500;
+            transition: transform 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-nav:hover {
+            transform: scale(1.05);
+            color: white;
+        }
+        
         /* Background Video */
         .video-container {
             position: fixed;
@@ -29,44 +78,133 @@
             height: 100%;
             object-fit: cover;
         }
+        
+        /* Overlay for better text visibility */
+        .video-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 0;
+        }
+        
         /* Transparent Div */
         .center-div {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background-color: rgba(255, 255, 255, 0.7);
-            padding: 30px;
-            border-radius: 15px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.85) 100%);
+            padding: 50px;
+            border-radius: 20px;
             text-align: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            z-index: 1;
+            backdrop-filter: blur(10px);
         }
+        
         .center-div h1 {
-            font-size: 2.5rem;
+            font-size: 3rem;
             margin-bottom: 20px;
-            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: bold;
         }
+        
+        .center-div p {
+            font-size: 1.2rem;
+            color: #555;
+            margin-bottom: 30px;
+        }
+        
         /* Buttons */
         .btn {
             display: inline-block;
-            padding: 15px 30px;
+            padding: 15px 40px;
             margin: 10px;
             font-size: 1.2rem;
             color: #fff;
             text-decoration: none;
-            background: linear-gradient(90deg, #007BFF, #00B4DB);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border: none;
-            border-radius: 8px;
+            border-radius: 50px;
             cursor: pointer;
             transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
         }
         .btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.6);
+            color: white;
+        }
+        
+        .btn i {
+            margin-right: 8px;
+        }
+        
+        /* Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -40%);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+        
+        .center-div {
+            animation: fadeInUp 0.8s ease;
         }
     </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-plane"></i>Travel Recommender
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/"><i class="fas fa-home"></i> Home</a>
+                    </li>
+                    {% if session.get('username') %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/recommendation"><i class="fas fa-compass"></i> Recommendations</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/ai-recommendation"><i class="fas fa-robot"></i> AI Recommendation</a>
+                    </li>
+                    <li class="nav-item">
+                        <span class="nav-link"><i class="fas fa-user"></i> {{ session.get('username') }}</span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-nav" href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login"><i class="fas fa-sign-in-alt"></i> Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-nav" href="/signup"><i class="fas fa-user-plus"></i> Sign Up</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
     <!-- Background Video -->
     <div class="video-container">
         <video autoplay loop muted>
@@ -74,11 +212,33 @@
             Your browser does not support HTML5 video.
         </video>
     </div>
+    
+    <!-- Video Overlay -->
+    <div class="video-overlay"></div>
 
     <!-- Center Div -->
     <div class="center-div">
-        <h1>Welcome to the Travel Recommendation System</h1>
-        <a href="/recommendation" class="btn">Travel Recommendation</a>
+        <h1><i class="fas fa-globe-americas"></i> Welcome to Travel Recommender</h1>
+        <p>Discover your next adventure with AI-powered personalized travel recommendations</p>
+        {% if session.get('username') %}
+            <a href="/recommendation" class="btn"><i class="fas fa-compass"></i> Get Recommendations</a>
+        {% else %}
+            <a href="/login" class="btn"><i class="fas fa-sign-in-alt"></i> Login to Start</a>
+            <a href="/signup" class="btn"><i class="fas fa-user-plus"></i> Create Account</a>
+        {% endif %}
     </div>
+    
+    <!-- Footer -->
+    <footer style="position: fixed; bottom: 0; width: 100%; background: rgba(255, 255, 255, 0.95); padding: 15px 0; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); z-index: 999;">
+        <div class="container">
+            <div style="text-align: center; color: #333;">
+                <p style="margin: 3px 0; font-size: 0.9rem;">Developed with <span style="color: #e74c3c; font-size: 1.1rem;">❤️</span> by <span style="font-weight: 600; color: #667eea;">Sanaiya</span></p>
+                <p style="margin: 3px 0; font-weight: 600; color: #667eea;">SANIYA S</p>
+                <p style="margin: 3px 0; font-size: 0.85rem; color: #666;">PES1PG24CA368</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
