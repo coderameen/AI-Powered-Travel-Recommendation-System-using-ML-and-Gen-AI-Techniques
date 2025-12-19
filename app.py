@@ -268,7 +268,7 @@ Make your recommendations detailed, practical, and personalized based on the use
                 return render_template('ai_recommendation.html')
             
             # Generate content using Gemini AI
-            model = genai.GenerativeModel('gemini-2.5-latest')
+            model = genai.GenerativeModel('gemini-2.5-flash')
             response = model.generate_content(prompt)
             
             # Convert markdown to HTML

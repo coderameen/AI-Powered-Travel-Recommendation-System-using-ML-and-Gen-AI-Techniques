@@ -301,7 +301,7 @@
                     <h1 class="text-center"><i class="fas fa-robot"></i> AI-Powered Travel Recommendation</h1>
                     <p class="text-center text-muted mb-4">Get personalized travel suggestions powered by Google Gemini AI</p>
                     
-                    <form method="POST" action="/ai-recommendation">
+                    <form method="POST" action="/ai-recommendation" id="recommendationForm">
                         <div class="row">
                             <!-- User Interest -->
                             <div class="col-md-12 mb-3">
@@ -398,7 +398,7 @@
                             </div>
                         </div>
                         
-                        <button type="submit" class="btn btn-generate">
+                        <button type="submit" class="btn btn-generate" id="submitBtn">
                             <i class="fas fa-magic"></i> Generate AI Recommendations
                         </button>
                     </form>
@@ -406,7 +406,7 @@
                 
                 <!-- Results Section -->
                 {% if recommendation %}
-                <div class="result-container">
+                <div class="result-container" id="resultsSection">
                     <h2><i class="fas fa-star"></i> Your Personalized Travel Recommendations</h2>
                     <div class="result-content">
                         {{ recommendation|safe }}
@@ -429,5 +429,26 @@
     </footer>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Auto-scroll to results section if it exists
+        document.addEventListener('DOMContentLoaded', function() {
+            const resultsSection = document.getElementById('resultsSection');
+            if (resultsSection) {
+                setTimeout(() => {
+                    resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 300);
+            }
+            
+            // Add visual feedback on form submit
+            const form = document.getElementById('recommendationForm');
+            const submitBtn = document.getElementById('submitBtn');
+            if (form) {
+                form.addEventListener('submit', function() {
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
+                });
+            }
+        });
+    </script>
 </body>
 </html>

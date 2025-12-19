@@ -5,6 +5,7 @@
 
 html, body {
   line-height: 1.4;
+  margin-top: 50px;
 }
 
 /* Typography */
@@ -16,9 +17,10 @@ p, label, .form-label, .nav-link, .btn, .form-control, .form-select, td, th {
 }
 
 /* Navbar tighter spacing */
-.navbar { padding: 0.5rem 0 !important; }
-.navbar .navbar-brand { font-size: 1.25rem !important; }
-.navbar .btn-nav { padding: 6px 16px !important; border-radius: 18px !important; font-size: 0.95rem !important; }
+.navbar { padding: 0.35rem 0 !important; }
+.navbar .navbar-brand { font-size: 1.1rem !important; }
+.navbar .nav-link { font-size: 0.9rem !important; margin: 0 6px !important; }
+.navbar .btn-nav { padding: 5px 14px !important; border-radius: 16px !important; font-size: 0.9rem !important; }
 
 /* Home page hero */
 .center-div {
